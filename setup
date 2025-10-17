@@ -19,30 +19,30 @@ pacman_tweaks() {
     sudo pacman -Syy
 }
 
-setup_yay() {
-    sudo pacman -S go
+setup_paru() {
+    echo 'Setting up Paru'
+	sudo pacman -S --needed base-devel
+	git clone https://aur.archlinux.org/paru.git
+	cd paru
+	makepkg -si
 
-    echo 'Setting up Yay'
-    sudo pacman -S --needed base-devel && git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
-
-    echo 'Remove yay folder'
+    echo 'Remove paru folder'
     cd ..
-    rm -rf yay
+    rm -rf paru
 
     echo 'Update packages'
-    yay -Syy
+    paru -Syy
 }
 
 setup_hyprland() {
     echo 'Installing requested packages'
-    yay -S acpilight \
+    paru -S acpilight \
+	waybar \
     blueman \
     bluez \
     bluez-utils \
-    swappy \
-    firefox \
+    chromium \
     foot \
-    grim \
     wireplumber \
     linux-headers \
     make \
@@ -50,18 +50,11 @@ setup_hyprland() {
     nvidia-dkms \
     pamixer \
     pavucontrol \
-    polkit-gnome \
-    qt6-wayland \
-    slurp \
-    swayidle \
-    swaylock \
     ttf-jetbrains-mono-nerd \
     ttf-nerd-fonts-symbols \
-    wl-clipboard \
     xdg-user-dirs \
     playerctl \
     wget \
-    steam \
     nodejs \
     npm \
     power-profiles-daemon \
@@ -69,41 +62,39 @@ setup_hyprland() {
     network-manager-applet \
     gvfs \
     xarchiver \
-    godot \
-    fuzzel \
     mako \
     gnome-keyring \
     rust \
     rust-analyzer \
-    helix \
-    gtk4 \
-    libadwaita \
-    wofi \
-    zig \
-    zls \
-    vala \
-    gnome-themes-extra \
-    nautilus \
-    meson \
-    ninja \
-    uncrustify \
-    flatpak \
-    flatpak-builder \
-    xdg-desktop-portal-gtk \
-    raylib \
+	hyprland \
+	hyprpicker \
+	nvidia-utils \
+	sddm \
+	hyprcursor \
+	hyprgraphics \
+	hypridle \
+	hyprland-protocols \
+	hyprland-qt-support \
+	hyprland-qtutils \
+	hyprlock \
+	hyprpolkitagent \
+	hyprshot \
+	hyprsunset \
+	hyprutils \
+	hyprwayland-scanner \
+	xdg-desktop-portal-hyprland \
+	nautilus \
+	gnome-themes-extra \
+	libnvidia-egl-wayland \
+	fuzzel \
+	wofi \
+	grim \
+	swappy \
+	slurp \
 
     echo 'Installing AUR packages'
-    yay -S candy-icons-git \
-    hyprpicker-git \
-    libva-nvidia-driver \
+    paru -S candy-icons-git \
     visual-studio-code-bin \
-    waybar-hyprland-git \
-    vala-language-server \
-    hyprland-git \
-    xdg-desktop-portal-hyprland-git \
-    hyprpaper-git \
-    pikture-git \
-    sddm-git \
 
     echo 'Enabling services'
     sudo systemctl enable power-profiles-daemon.service
@@ -124,7 +115,7 @@ setup_hyprland() {
 
 setup_kde() {
     echo 'Installing requested packages'
-    yay -S chromium \
+    paru -S chromium \
     linux-headers \
     make \
     ttf-nerd-fonts-symbols \
@@ -137,7 +128,7 @@ setup_kde() {
     neovim \
 
     echo 'Installing AUR packages'
-    yay -S visual-studio-code-bin
+    paru -S visual-studio-code-bin
 
     echo 'Enabling services'
     sudo systemctl enable bluetooth.service
@@ -148,7 +139,7 @@ setup_kde() {
 
 setup_gnome() {
     echo 'Installing requested packages'
-    yay -S chromium \
+    paru -S chromium \
     linux-headers \
     nvidia-dkms \
     ttf-nerd-fonts-symbols \
@@ -162,7 +153,7 @@ setup_gnome() {
     gnome-themes-extra \
 
     echo 'Installing AUR packages'
-    yay -S visual-studio-code-bin \
+    paru -S visual-studio-code-bin \
 
     echo 'Enabling services'
     sudo systemctl enable bluetooth.service
@@ -200,9 +191,9 @@ main() {
         pacman_tweaks
     fi
 
-    read -p "Do you want to setup yay (Y/N)?" yay
-    if [ $yay == 'Y' ] || [ $yay == 'y' ]; then
-        setup_yay
+    read -p "Do you want to setup paru (Y/N)?" paru
+    if [ $paru == 'Y' ] || [ $paru == 'y' ]; then
+        setup_paru
     fi
 
     read -p "Do you want to setup hyprland (Y/N)?" hyprland
